@@ -1,6 +1,10 @@
 from typing import Any
 import pygame
 from pygame import Rect
+from pygame.math import Vector2
+from enums import Dir
+
+
 
 
 class Vector2D:
@@ -9,7 +13,8 @@ class Vector2D:
 
 # Define the sprite class
 class Autko(pygame.sprite.Sprite):
-    friction = 0.11
+    coefficient_of_friction = 0.18
+
 
 
     def __init__(self, x=120, y=120):
@@ -21,18 +26,31 @@ class Autko(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-        self.speed = Vector2D()
+        self.velocity = Vector2(0, 0)
+        self.acceleration = Vector2(0, 0)
 
 
-    def speed_x(self):
-        self.speed.x = 5.0
+
+    def accelerate_x(self, dir: Dir):
+        if dir == Dir.R:
+            self.acceleration.x = 0.6
+        if dir == Dir.L:
+            self.acceleration.x = -0.6
+
+    def stop_x(self):
+        self.acceleration.x = 0.0
+        self.acceleration.y = 0.0
 
     def update(self, *args: Any, **kwargs: Any) -> None:
-        self.rect.x += self.speed.x
-        self.rect.y += self.speed.y
+        self.velocity += self.acceleration
 
-        self.speed.x -= self.friction if self.speed.x >= 0 else 0
-        self.speed.y -= self.friction if self.speed.y >= 0 else 0
+        if self.velocity.length() > 0:
+            friction_force = -self.velocity.normalize() * self.coefficient_of_friction
+            self.velocity += friction_force
+
+        self.rect.x += self.velocity.x
+        self.rect.y += self.velocity.y
+
 
 
         return super().update(*args, **kwargs)

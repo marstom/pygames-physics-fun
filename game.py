@@ -25,8 +25,10 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type in [pygame.KEYDOWN, pygame.KEYUP]:
+        elif event.type == pygame.KEYDOWN:
             gra.move(event)
+        elif event.type == pygame.KEYUP:
+            gra.stop(event)
 
     # Update game state
 
