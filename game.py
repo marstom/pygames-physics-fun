@@ -16,7 +16,9 @@ clock = pygame.time.Clock()
 # Game loop
 running = True
 
-gra = scene.Scene()
+
+sprites = pygame.sprite.Group()
+gra = scene.Scene(sprites)
 
 while running:
     # Handle events
@@ -31,8 +33,8 @@ while running:
     # Draw to the screen
     screen.fill((255, 255, 255))  # Fill the screen with white
     # Draw game objects here
-    # scene.render(screen)
     gra.render(screen)
+
 
 
     # Update the display

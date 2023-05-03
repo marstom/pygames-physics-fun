@@ -1,5 +1,7 @@
 import pygame
 from pygame import Surface
+from autko import Autko
+from pygame.sprite import Sprite, Group
 
 
 class Rect:
@@ -18,15 +20,25 @@ class Rect:
 
 class Scene:
     position = [0,0]
+    sprites: Group
 
     rect = Rect()
 
+    def __init__(self, sprites) -> None:
+        self.sprites = sprites
+        self.autko = Autko()
+        self.sprites.add(self.autko)
+
     def render(self, screen: Surface):
         pygame.draw.rect(screen, [255, 0, 0], [self.rect.w, self.rect.h, self.rect.x, self.rect.y])
+        self.sprites.update()
         self.rect.refresh()
+
+        self.sprites.draw(screen)
 
     def move(self, event):
         if event.key == pygame.K_d:
+            self.autko.speed_x()
             self.rect.vel_x +=1
         if event.key == pygame.K_a:
             self.rect.vel_x -=1
