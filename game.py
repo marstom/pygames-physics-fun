@@ -1,12 +1,12 @@
 import pygame
 import scene
-
+from constatnts import SCREEN_H, SCREEN_W
 # Initialize Pygame
 pygame.init()
 
 # Set up the display
-screen_width = 800
-screen_height = 600
+screen_width = SCREEN_W
+screen_height = SCREEN_H
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("My Game")
 
@@ -25,9 +25,11 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN:
             gra.move(event)
-        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_q:
+                running = False
+        if event.type == pygame.KEYUP:
             gra.stop(event)
 
     # Update game state
@@ -36,7 +38,6 @@ while running:
     screen.fill((255, 255, 255))  # Fill the screen with white
     # Draw game objects here
     gra.render(screen)
-
 
 
     # Update the display

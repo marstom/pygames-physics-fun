@@ -2,7 +2,7 @@ import pygame
 from pygame import Surface
 from autko import Autko
 from pygame.sprite import Sprite, Group
-from enums import Dir
+from enums import Dir, TurnDir, AccDir
 
 
 class Rect:
@@ -39,17 +39,21 @@ class Scene:
 
     def move(self, event):
         print("Move")
-        if event.key == pygame.K_d:
-            self.autko.accelerate_x(Dir.R)
+        if event.key == pygame.K_w:
+            self.autko.accelerate(AccDir.FORWARD)
+        if event.key == pygame.K_s:
+            self.autko.accelerate(AccDir.BACKWARD)
         if event.key == pygame.K_a:
-            self.autko.accelerate_x(Dir.L)
+            self.autko.turn(TurnDir.R)
+        if event.key == pygame.K_d:
+            self.autko.turn(TurnDir.L)
 
     def stop(self, event):
         print("Stop")
-        if event.key == pygame.K_d:
-            self.autko.stop_x()
-        if event.key == pygame.K_a:
-            self.autko.stop_x()
-            ...
+        self.autko.stop()
+        # if event.key == pygame.K_d:
+        # if event.key == pygame.K_a:
+            # self.autko.stop()
+            # ...
 
         print(event)
