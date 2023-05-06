@@ -30,7 +30,6 @@ class Autko(pygame.sprite.Sprite):
         self.acceleration = Vector2(0, 0)
 
 
-
     def accelerate_x(self, dir: Dir):
         if dir == Dir.R:
             self.acceleration.x = 0.6
@@ -41,8 +40,12 @@ class Autko(pygame.sprite.Sprite):
         self.acceleration.x = 0.0
         self.acceleration.y = 0.0
 
+    def turn(self):
+        self.acceleration.rotate_ip(1)
+
     def update(self, *args: Any, **kwargs: Any) -> None:
         self.velocity += self.acceleration
+        # self.acceleration.rotate_ip(5)
 
         if self.velocity.length() > 0:
             friction_force = -self.velocity.normalize() * self.coefficient_of_friction
