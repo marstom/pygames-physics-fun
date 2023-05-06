@@ -3,7 +3,7 @@ import pygame
 from pygame import Rect
 from pygame.math import Vector2
 from constatnts import SCREEN_H, SCREEN_W
-from enums import Dir, AccDir, TurnDir
+from enums import AccDir, TurnDir
 
 
 

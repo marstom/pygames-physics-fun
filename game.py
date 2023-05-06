@@ -26,11 +26,15 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
+            print("keydown...")
             gra.move(event)
             if event.key == pygame.K_q:
                 running = False
         if event.type == pygame.KEYUP:
+            print("keyup...")
+            # TODO not always need to stop...
             gra.stop(event)
+        # TODO keyhold
 
     # Update game state
 
