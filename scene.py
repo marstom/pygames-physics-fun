@@ -1,8 +1,9 @@
 import pygame
 from pygame import Surface
-from autko import Autko
+from sprites.autko import Autko
 from pygame.sprite import Sprite, Group
 from enums import TurnDir, AccDir
+from sprites.grass import Grass
 
 
 class Scene:
@@ -12,12 +13,17 @@ class Scene:
     def __init__(self, sprites) -> None:
         self.sprites = sprites
         self.autko = Autko()
+        grass = Grass()
+
         self.sprites.add(self.autko)
+        self.sprites.add(grass)
 
     def render(self, screen: Surface):
+
         # pygame.draw.rect(screen, [255, 0, 0], [self.rect.w, self.rect.h, self.rect.x, self.rect.y])
         self.sprites.update()
         self.sprites.draw(screen)
+
 
     def key_down(self, event):
         print("Move")

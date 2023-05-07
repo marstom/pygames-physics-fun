@@ -17,7 +17,7 @@ class Autko(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load("assets/aqua_ball.png").convert_alpha()
         self.image.set_colorkey((255,255,255))
-        # pygame.transform.scale(self.image, (self.image.get_width()*2, self.image.get_height()*2))
+        self.image = pygame.transform.scale(self.image, (self.image.get_width()*2, self.image.get_height()*2))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y

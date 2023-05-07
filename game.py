@@ -17,8 +17,12 @@ clock = pygame.time.Clock()
 running = True
 
 
-sprite = pygame.sprite.Group()
-gra = scene.Scene(sprite)
+group_objects = pygame.sprite.Group()
+gra = scene.Scene(group_objects)
+
+# draw background
+bg = pygame.image.load("assets/bg.jpeg")
+bg = pygame.transform.scale(bg, (SCREEN_W, SCREEN_H))
 
 while running:
     # Handle events
@@ -42,6 +46,7 @@ while running:
 
     # Draw to the screen
     screen.fill((255, 255, 255))  # Fill the screen with white
+    screen.blit(bg, (0,0))
     # Draw game objects here
     gra.render(screen)
 
