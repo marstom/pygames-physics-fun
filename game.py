@@ -17,8 +17,8 @@ clock = pygame.time.Clock()
 running = True
 
 
-sprites = pygame.sprite.Group()
-gra = scene.Scene(sprites)
+sprite = pygame.sprite.Group()
+gra = scene.Scene(sprite)
 
 while running:
     # Handle events
@@ -27,14 +27,16 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             print("keydown...")
-            gra.move(event)
+            gra.key_down(event)
             if event.key == pygame.K_q:
                 running = False
         if event.type == pygame.KEYUP:
             print("keyup...")
-            # TODO not always need to stop...
-            gra.stop(event)
-        # TODO keyhold
+            gra.key_up(event)
+
+    # get currently pressed and holded key
+    # key = pygame.key.get_pressed()
+    # print(key[pygame.K_w])
 
     # Update game state
 

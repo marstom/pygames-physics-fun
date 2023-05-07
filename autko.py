@@ -6,22 +6,16 @@ from constatnts import SCREEN_H, SCREEN_W
 from enums import AccDir, TurnDir
 
 
-
-
-class Vector2D:
-    x: float = 0.0
-    y: float = 0.0
-
-# Define the sprite class
 class Autko(pygame.sprite.Sprite):
     coefficient_of_friction = 0.22
 
+    turn_speed = 0.0
     turn_value_degrees = 0.0
 
 
     def __init__(self, x=120, y=120):
         super().__init__()
-        self.image = pygame.image.load("assets/car.png").convert_alpha()
+        self.image = pygame.image.load("assets/aqua_ball.png").convert_alpha()
         self.image.set_colorkey((255,255,255))
         # pygame.transform.scale(self.image, (self.image.get_width()*2, self.image.get_height()*2))
         self.rect = self.image.get_rect()
@@ -41,35 +35,49 @@ class Autko(pygame.sprite.Sprite):
             self.acceleration = Vector2(-0.6, 0).rotate(self.turn_value_degrees)
             # self.acceleration.x = -0.6
 
-    def stop(self):
+    def accelerate_stop(self):
         self.acceleration.x = 0.0
         self.acceleration.y = 0.0
         print(f"!Stop {self.acceleration.x} {self.acceleration.y}")
 
+    def turn_stop(self):
+        self.turn_speed = 0
+
     def turn(self, dir: TurnDir):
-        turn_strength_degrees = 1
-        if dir == TurnDir.R:
-            self.turn_value_degrees += turn_strength_degrees
+        turn_strength_degrees = 4.00
         if dir == TurnDir.L:
-            self.turn_value_degrees -= turn_strength_degrees
+            self.turn_speed +=turn_strength_degrees
+        if dir == TurnDir.R:
+            self.turn_speed -= turn_strength_degrees
         print(f"Turn.... {self.turn_value_degrees}")
             
 
     def update(self, *args: Any, **kwargs: Any) -> None:
-        self.velocity += self.acceleration
-        # self.acceleration.rotate_ip(5)
-
-        if self.velocity.length() != 0:
-            friction_force = -self.velocity.normalize() * self.coefficient_of_friction
-            self.velocity += friction_force
-
-        self.rect.x += self.velocity.x
-        self.rect.y += self.velocity.y
+        """
+        Call every game loop
+        """
+        self._move_model_update()
+        self._turning_update()
+        self.__debug_prints()
 
 
         self.rect.x %= SCREEN_W 
         self.rect.y %= SCREEN_H 
+        # return super().update(*args, **kwargs)
 
+    def _move_model_update(self):
+        self.velocity += self.acceleration
+        if self.velocity.length() != 0:
+            friction_force = -self.velocity.normalize() * self.coefficient_of_friction
+            self.velocity += friction_force
+        self.rect.x += self.velocity.x
+        self.rect.y += self.velocity.y
 
+    def _turning_update(self):
+        self.turn_value_degrees += self.turn_speed
+        self.turn_value_degrees %= 360.00
 
-        return super().update(*args, **kwargs)
+    def __debug_prints(self):
+        print(f"Turn: {self.turn_value_degrees}")
+        print(f"pos x y: {self.rect}")
+        

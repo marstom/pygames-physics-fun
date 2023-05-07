@@ -19,7 +19,7 @@ class Scene:
         self.sprites.update()
         self.sprites.draw(screen)
 
-    def move(self, event):
+    def key_down(self, event):
         print("Move")
         if event.key == pygame.K_w:
             self.autko.accelerate(AccDir.FORWARD)
@@ -30,7 +30,12 @@ class Scene:
         if event.key == pygame.K_d:
             self.autko.turn(TurnDir.L)
 
-    def stop(self, event):
+    def key_up(self, event):
         print("Stop")
         # TODO only stop if acc keys pressed
-        self.autko.stop()
+        change_speed_keys = [pygame.K_w, pygame.K_s]
+        if event.key in change_speed_keys:
+            self.autko.accelerate_stop()
+        turn_keys = [pygame.K_a, pygame.K_d]
+        if event.key in turn_keys:
+            self.autko.turn_stop()
