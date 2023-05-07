@@ -28,7 +28,7 @@ class Autko(pygame.sprite.Sprite):
 
     def accelerate(self, dir: AccDir):
         print("ACC")
-        # TODO add acc vector!
+        # TODO accalerate has ange, must be update every frame !
         if dir == AccDir.FORWARD:
             self.acceleration = Vector2(0.6, 0).rotate(self.turn_value_degrees)
         if dir == AccDir.BACKWARD:

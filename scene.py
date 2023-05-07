@@ -1,7 +1,7 @@
 import pygame
 from pygame import Surface
 from sprites.autko import Autko
-from pygame.sprite import Sprite, Group
+from pygame.sprite import Group
 from enums import TurnDir, AccDir
 from sprites.grass import Grass
 
@@ -10,15 +10,24 @@ class Scene:
     position = [0,0]
     sprites: Group
 
-    def __init__(self, sprites) -> None:
+    def __init__(self, sprites: Group, screen_width: int, screen_height: int) -> None:
         self.sprites = sprites
         self.autko = Autko()
+        self.screen_width = screen_width
+        self.screen_height = screen_height
+
         grass = Grass()
 
         self.sprites.add(self.autko)
         self.sprites.add(grass)
 
+        # draw background
+        self.bg = pygame.image.load("assets/bg.jpeg")
+        self.bg = pygame.transform.scale(self.bg, ( self.screen_width, self.screen_height))
+
     def render(self, screen: Surface):
+        # Draw level background
+        screen.blit(self.bg, (0,0))
 
         # pygame.draw.rect(screen, [255, 0, 0], [self.rect.w, self.rect.h, self.rect.x, self.rect.y])
         self.sprites.update()
