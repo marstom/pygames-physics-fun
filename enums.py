@@ -8,3 +8,4 @@ class TurnDir(Enum):
 class AccDir(Enum):
     FORWARD = auto()
     BACKWARD = auto()
+    STOP = auto()

@@ -11,6 +11,7 @@ class Autko(pygame.sprite.Sprite):
 
     turn_speed = 0.0
     turn_value_degrees = 0.0
+    top_speed = 10.00
 
 
     def __init__(self, x=120, y=120):
@@ -46,9 +47,9 @@ class Autko(pygame.sprite.Sprite):
     def turn(self, dir: TurnDir):
         turn_strength_degrees = 4.00
         if dir == TurnDir.L:
-            self.turn_speed +=turn_strength_degrees
+            self.turn_speed =turn_strength_degrees
         if dir == TurnDir.R:
-            self.turn_speed -= turn_strength_degrees
+            self.turn_speed = turn_strength_degrees
         print(f"Turn.... {self.turn_value_degrees}")
             
 
@@ -73,6 +74,12 @@ class Autko(pygame.sprite.Sprite):
         self.rect.x += self.velocity.x
         self.rect.y += self.velocity.y
 
+        # robi rogal
+        if abs(self.velocity.x) >= abs(self.top_speed): 
+            self.velocity.x = self.top_speed if self.velocity.x > 0 else -self.top_speed
+        if abs(self.velocity.y) >= abs(self.top_speed):
+            self.velocity.y = self.top_speed if self.velocity.y > 0 else -self.top_speed
+
     def _turning_update(self):
         self.turn_value_degrees += self.turn_speed
         self.turn_value_degrees %= 360.00
@@ -80,4 +87,5 @@ class Autko(pygame.sprite.Sprite):
     def __debug_prints(self):
         print(f"Turn: {self.turn_value_degrees}")
         print(f"pos x y: {self.rect}")
+        print(f"Vel: {self.velocity}")
         
