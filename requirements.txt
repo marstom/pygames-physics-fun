@@ -1,4 +1,5 @@
 pygame
+black
 
 pytest
 ipython

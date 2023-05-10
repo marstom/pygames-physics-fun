@@ -71,14 +71,17 @@ class Autko(pygame.sprite.Sprite):
         y = self.rect.y
         pos = Vector2(x + self.rect.h / 2, y + self.rect.h / 2)
         if self.acceleration.length() > 0:
-            pygame.draw.line(self.screen, (255, 0, 0),
-                             self.acceleration.rotate(self.turn_value_degrees).normalize() * 50 + pos, pos, 4)
+            pygame.draw.line(
+                self.screen,
+                (255, 0, 0),
+                self.acceleration.rotate(self.turn_value_degrees).normalize() * 50 + pos,
+                pos,
+                4,
+            )
         if self.velocity.length() > 0:
-            pygame.draw.line(self.screen, (0, 125, 255),
-                             self.velocity.normalize() * 50 + pos, pos, 4)
+            pygame.draw.line(self.screen, (0, 125, 255), self.velocity.normalize() * 50 + pos, pos, 4)
         if self.velocity.length() > 0:
-            pygame.draw.line(self.screen, (0, 125, 0),
-                             self.velocity * 10 + pos, pos, 4)
+            pygame.draw.line(self.screen, (0, 125, 0), self.velocity * 10 + pos, pos, 4)
 
         self.rect.x %= SCREEN_W
         self.rect.y %= SCREEN_H

@@ -7,7 +7,7 @@ from sprites.grass import Grass
 
 
 class Scene:
-    position = [0,0]
+    position = [0, 0]
     sprites: Group
 
     def __init__(self, screen: Surface, sprites: Group, screen_width: int, screen_height: int) -> None:
@@ -23,16 +23,15 @@ class Scene:
 
         # draw background
         self.bg = pygame.image.load("assets/bg.jpeg")
-        self.bg = pygame.transform.scale(self.bg, ( self.screen_width, self.screen_height))
+        self.bg = pygame.transform.scale(self.bg, (self.screen_width, self.screen_height))
 
     def render(self, screen: Surface):
         # Draw level background
-        screen.blit(self.bg, (0,0))
+        screen.blit(self.bg, (0, 0))
 
         # pygame.draw.rect(screen, [255, 0, 0], [self.rect.w, self.rect.h, self.rect.x, self.rect.y])
         self.sprites.update()
         self.sprites.draw(screen)
-
 
     def key_down(self, event):
         print("Move")

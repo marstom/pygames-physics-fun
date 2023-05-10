@@ -1,6 +1,7 @@
 import pygame
 import scene
 from constatnts import SCREEN_H, SCREEN_W
+
 # Initialize Pygame
 pygame.init()
 
@@ -45,7 +46,6 @@ while running:
     screen.fill((255, 255, 255))  # Fill the screen with white
     # Draw game objects here
     gra.render(screen)
-
 
     # Update the display
     pygame.display.flip()
