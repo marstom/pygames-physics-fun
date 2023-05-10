@@ -18,6 +18,7 @@ class Autko(pygame.sprite.Sprite):
     accel: AccDir = AccDir.STOP
 
     FRICT = False
+    SPEED_LIMIT = False
 
     def __init__(self, screen: Surface, x=120, y=120):
         super().__init__()
@@ -28,6 +29,7 @@ class Autko(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.position = Vector2(self.rect.x, self.rect.y)
 
         self.velocity = Vector2(0, 0)
         self.acceleration = Vector2(0, 0)
@@ -39,7 +41,6 @@ class Autko(pygame.sprite.Sprite):
             self.acceleration = Vector2(0.1, 0)
         if dir == AccDir.BACKWARD:
             self.acceleration = Vector2(-0.1, 0)
-            # self.acceleration.x = -0.6
 
     def accelerate_stop(self):
         self.accel = AccDir.STOP
@@ -65,11 +66,51 @@ class Autko(pygame.sprite.Sprite):
         self._move_model_update()
         self._turning_update()
         self.__debug_prints()
+        self._visualise_vectors()
 
+        # Screen scroll
+        self.rect.x %= SCREEN_W
+        self.rect.y %= SCREEN_H
+
+    def _move_model_update(self):
+        # self.acceleration = self.acceleration.rotate(self.turn_value_degrees)
+        self.position.x = self.rect.x
+        self.position.y = self.rect.y
+
+        self.velocity += self.acceleration.rotate(self.turn_value_degrees)
+
+        if self.FRICT:
+            if self.velocity.length() != 0:
+                friction_force = -self.velocity.normalize() * self.coefficient_of_friction
+                self.velocity += friction_force
+        # self.position.x += self.velocity.x
+        # self.rect.y += self.velocity.y
+        self.position += self.velocity
+
+        # robi rogal
+        if self.SPEED_LIMIT:
+            if abs(self.velocity.x) >= abs(self.top_speed):
+                self.velocity.x = self.top_speed if self.velocity.x > 0 else -self.top_speed
+            if abs(self.velocity.y) >= abs(self.top_speed):
+                self.velocity.y = self.top_speed if self.velocity.y > 0 else -self.top_speed
+        self.rect.x = self.position.x
+        self.rect.y = self.position.y
+
+    def _turning_update(self):
+        self.turn_value_degrees += self.turn_speed
+        self.turn_value_degrees %= 360.00
+
+    def __debug_prints(self):
+        print(f"Turn: {self.turn_value_degrees}")
+        print(f"pos x y: {self.rect} {self.position}")
+        print(f"Vel: {self.velocity}")
+
+    def _visualise_vectors(self):
         # Draw direction vectors
         x = self.rect.x
         y = self.rect.y
-        pos = Vector2(x + self.rect.h / 2, y + self.rect.h / 2)
+        # pos = Vector2(x + self.rect.h / 2, y + self.rect.h / 2)
+        pos = self.position + Vector2(self.rect.h / 2, self.rect.w / 2)
         if self.acceleration.length() > 0:
             pygame.draw.line(
                 self.screen,
@@ -82,33 +123,3 @@ class Autko(pygame.sprite.Sprite):
             pygame.draw.line(self.screen, (0, 125, 255), self.velocity.normalize() * 50 + pos, pos, 4)
         if self.velocity.length() > 0:
             pygame.draw.line(self.screen, (0, 125, 0), self.velocity * 10 + pos, pos, 4)
-
-        self.rect.x %= SCREEN_W
-        self.rect.y %= SCREEN_H
-        # return super().update(*args, **kwargs)
-
-    def _move_model_update(self):
-        # self.acceleration = self.acceleration.rotate(self.turn_value_degrees)
-        self.velocity += self.acceleration.rotate(self.turn_value_degrees)
-
-        if self.FRICT:
-            if self.velocity.length() != 0:
-                friction_force = -self.velocity.normalize() * self.coefficient_of_friction
-                self.velocity += friction_force
-        self.rect.x += self.velocity.x
-        self.rect.y += self.velocity.y
-
-        # robi rogal
-        if abs(self.velocity.x) >= abs(self.top_speed):
-            self.velocity.x = self.top_speed if self.velocity.x > 0 else -self.top_speed
-        if abs(self.velocity.y) >= abs(self.top_speed):
-            self.velocity.y = self.top_speed if self.velocity.y > 0 else -self.top_speed
-
-    def _turning_update(self):
-        self.turn_value_degrees += self.turn_speed
-        self.turn_value_degrees %= 360.00
-
-    def __debug_prints(self):
-        print(f"Turn: {self.turn_value_degrees}")
-        print(f"pos x y: {self.rect}")
-        print(f"Vel: {self.velocity}")

@@ -5,4 +5,4 @@ diagram:
 
 
 black:
-    black --line-length 120 .
+	black --line-length 120 .
