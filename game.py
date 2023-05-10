@@ -18,7 +18,7 @@ running = True
 
 
 group_objects = pygame.sprite.Group()
-gra = scene.Scene(group_objects, screen_width, screen_height)
+gra = scene.Scene(screen, group_objects, screen_width, screen_height)
 
 
 while running:

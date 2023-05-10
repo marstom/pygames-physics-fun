@@ -10,16 +10,16 @@ class Scene:
     position = [0,0]
     sprites: Group
 
-    def __init__(self, sprites: Group, screen_width: int, screen_height: int) -> None:
+    def __init__(self, screen: Surface, sprites: Group, screen_width: int, screen_height: int) -> None:
         self.sprites = sprites
-        self.autko = Autko()
+        self.autko = Autko(screen)
         self.screen_width = screen_width
         self.screen_height = screen_height
 
-        grass = Grass()
+        # grass = Grass()
 
         self.sprites.add(self.autko)
-        self.sprites.add(grass)
+        # self.sprites.add(grass)
 
         # draw background
         self.bg = pygame.image.load("assets/bg.jpeg")

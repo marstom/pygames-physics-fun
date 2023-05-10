@@ -1,6 +1,7 @@
 from typing import Any
 
 import pygame
+from pygame import Surface
 from pygame.math import Vector2
 
 from constatnts import SCREEN_H, SCREEN_W
@@ -18,8 +19,9 @@ class Autko(pygame.sprite.Sprite):
 
     FRICT = False
 
-    def __init__(self, x=120, y=120):
+    def __init__(self, screen: Surface, x=120, y=120):
         super().__init__()
+        self.screen = screen
         self.image = pygame.image.load("assets/aqua_ball.png").convert_alpha()
         self.image.set_colorkey((255, 255, 255))
         self.image = pygame.transform.scale(self.image, (self.image.get_width() * 2, self.image.get_height() * 2))
@@ -64,11 +66,26 @@ class Autko(pygame.sprite.Sprite):
         self._turning_update()
         self.__debug_prints()
 
+        # Draw direction vectors
+        x = self.rect.x
+        y = self.rect.y
+        pos = Vector2(x + self.rect.h / 2, y + self.rect.h / 2)
+        if self.acceleration.length() > 0:
+            pygame.draw.line(self.screen, (255, 0, 0),
+                             self.acceleration.rotate(self.turn_value_degrees).normalize() * 50 + pos, pos, 4)
+        if self.velocity.length() > 0:
+            pygame.draw.line(self.screen, (0, 125, 255),
+                             self.velocity.normalize() * 50 + pos, pos, 4)
+        if self.velocity.length() > 0:
+            pygame.draw.line(self.screen, (0, 125, 0),
+                             self.velocity * 10 + pos, pos, 4)
+
         self.rect.x %= SCREEN_W
         self.rect.y %= SCREEN_H
         # return super().update(*args, **kwargs)
 
     def _move_model_update(self):
+        # self.acceleration = self.acceleration.rotate(self.turn_value_degrees)
         self.velocity += self.acceleration.rotate(self.turn_value_degrees)
 
         if self.FRICT:
