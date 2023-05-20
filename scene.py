@@ -5,6 +5,8 @@ from pygame.sprite import Group
 from enums import TurnDir, AccDir
 from sprites.grass import Grass
 
+from pygame.math import Vector2
+from random import randint, uniform
 
 class Scene:
     position = [0, 0]
@@ -12,9 +14,18 @@ class Scene:
 
     def __init__(self, screen: Surface, sprites: Group, screen_width: int, screen_height: int) -> None:
         self.sprites = sprites
-        self.autko = Autko(screen)
+        self.autko = Autko(screen, type=Autko.TypeOfBall.PLAYER)
         self.screen_width = screen_width
         self.screen_height = screen_height
+
+
+        for _ in range(3250):
+            rand_angle = uniform(0, 360)
+            rand_speed = uniform(1,5)
+            rand_pos = [uniform(0, 800), uniform(0, 800)]
+            evil = Autko(screen, x=rand_pos[0], y=rand_pos[1], type=Autko.TypeOfBall.EVIL)
+            evil.velocity = Vector2(rand_speed, 0).rotate(rand_angle)
+            sprites.add(evil)
 
         # grass = Grass()
 

@@ -7,8 +7,16 @@ from pygame.math import Vector2
 from constatnts import SCREEN_H, SCREEN_W
 from enums import AccDir, TurnDir
 
+from enum import Enum, auto
+
+DEBUG_PRINTS = 0
+
 
 class Autko(pygame.sprite.Sprite):
+    class TypeOfBall(Enum):
+        PLAYER = auto()
+        EVIL = auto()
+
     coefficient_of_friction = 0.22
 
     turn_speed = 0.0
@@ -20,10 +28,13 @@ class Autko(pygame.sprite.Sprite):
     FRICT = False
     SPEED_LIMIT = False
 
-    def __init__(self, screen: Surface, x=120, y=120):
+    def __init__(self, screen: Surface, x=120, y=120, type: TypeOfBall = TypeOfBall.PLAYER):
         super().__init__()
         self.screen = screen
-        self.image = pygame.image.load("assets/aqua_ball.png").convert_alpha()
+        if type == self.TypeOfBall.PLAYER:
+            self.image = pygame.image.load("assets/aqua_ball.png").convert_alpha()
+        elif type == self.TypeOfBall.EVIL:
+            self.image = pygame.image.load("assets/evil_ball.png").convert_alpha()
         self.image.set_colorkey((255, 255, 255))
         self.image = pygame.transform.scale(self.image, (self.image.get_width() * 2, self.image.get_height() * 2))
         self.rect = self.image.get_rect()
@@ -65,7 +76,8 @@ class Autko(pygame.sprite.Sprite):
         """
         self._move_model_update()
         self._turning_update()
-        self.__debug_prints()
+        if DEBUG_PRINTS:
+            self.__debug_prints()
         self._visualise_vectors()
 
         # Screen scroll
@@ -120,7 +132,8 @@ class Autko(pygame.sprite.Sprite):
                 4,
             )
         else:
-            print(f"Degree {self.turn_value_degrees}")
+            if DEBUG_PRINTS:
+                print(f"Degree {self.turn_value_degrees}")
             pygame.draw.line(
                 surface=self.screen,
                 color=(128, 128, 121),
