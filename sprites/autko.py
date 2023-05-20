@@ -119,6 +119,15 @@ class Autko(pygame.sprite.Sprite):
                 pos,
                 4,
             )
+        else:
+            print(f"Degree {self.turn_value_degrees}")
+            pygame.draw.line(
+                surface=self.screen,
+                color=(128, 128, 121),
+                start_pos=pos,
+                end_pos=pos + Vector2(50,0).rotate(self.turn_value_degrees),
+                width=4,
+            )
         if self.velocity.length() > 0:
             pygame.draw.line(self.screen, (0, 125, 255), self.velocity.normalize() * 50 + pos, pos, 4)
         if self.velocity.length() > 0:
