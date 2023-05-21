@@ -8,6 +8,7 @@ from sprites.grass import Grass
 from pygame.math import Vector2
 from random import randint, uniform
 
+
 class Scene:
     position = [0, 0]
     sprites: Group
@@ -18,18 +19,17 @@ class Scene:
         self.screen_width = screen_width
         self.screen_height = screen_height
 
-
         if 1:
             for _ in range(32):
                 rand_angle = uniform(0, 360)
-                rand_speed = uniform(1,5)
+                rand_speed = uniform(1, 5)
                 rand_pos = [uniform(0, 800), uniform(0, 800)]
                 evil = Autko(screen, x=rand_pos[0], y=rand_pos[1], type=Autko.TypeOfBall.EVIL)
                 evil.velocity = Vector2(rand_speed, 0).rotate(rand_angle)
                 sprites.add(evil)
-        
+
         if 0:
-            evil2= Autko(screen, x=290, y=120, type=Autko.TypeOfBall.EVIL)
+            evil2 = Autko(screen, x=290, y=120, type=Autko.TypeOfBall.EVIL)
             sprites.add(evil2)
 
         # grass = Grass()

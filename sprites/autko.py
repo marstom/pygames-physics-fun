@@ -12,7 +12,6 @@ from enum import Enum, auto
 DEBUG_PRINTS = 0
 
 
-
 class Autko(pygame.sprite.Sprite):
     class TypeOfBall(Enum):
         PLAYER = auto()
@@ -75,7 +74,7 @@ class Autko(pygame.sprite.Sprite):
         """
         Call every game loop
         """
-        sprites: list[Autko] = kwargs['sprites']
+        sprites: list[Autko] = kwargs["sprites"]
         # collision logic
         for sp in sprites:
             if sp is not self and self.rect.colliderect(sp.rect):
@@ -98,7 +97,6 @@ class Autko(pygame.sprite.Sprite):
                     # Update velocities
                     self.velocity += impulse
                     sp.velocity -= impulse
-            
 
         self._move_model_update()
         self._turning_update()
@@ -164,7 +162,7 @@ class Autko(pygame.sprite.Sprite):
                 surface=self.screen,
                 color=(128, 128, 121),
                 start_pos=pos,
-                end_pos=pos + Vector2(50,0).rotate(self.turn_value_degrees),
+                end_pos=pos + Vector2(50, 0).rotate(self.turn_value_degrees),
                 width=4,
             )
         if self.velocity.length() > 0:
