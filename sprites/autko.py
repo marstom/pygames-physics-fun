@@ -20,7 +20,7 @@ class Autko(pygame.sprite.Sprite):
     coefficient_of_friction = 0.22
 
     turn_speed = 0.0
-    turn_value_degrees = 0.0
+    turn_value_degrees = 4.0
     top_speed = 10.00
 
     accel: AccDir = AccDir.STOP

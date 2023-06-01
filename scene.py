@@ -20,9 +20,9 @@ class Scene:
         self.screen_height = screen_height
 
         if 1:
-            for _ in range(32):
+            for _ in range(12):
                 rand_angle = uniform(0, 360)
-                rand_speed = uniform(1, 5)
+                rand_speed = uniform(0, 0)
                 rand_pos = [uniform(0, 800), uniform(0, 800)]
                 evil = Autko(screen, x=rand_pos[0], y=rand_pos[1], type=Autko.TypeOfBall.EVIL)
                 evil.velocity = Vector2(rand_speed, 0).rotate(rand_angle)
