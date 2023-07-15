@@ -1,12 +1,14 @@
 import pygame
 from pygame import Surface
-from sprites.autko import Autko
+from sprites.autko import Autko, TypeOfBall
 from pygame.sprite import Group
 from enums import TurnDir, AccDir
 from sprites.grass import Grass
 
 from pygame.math import Vector2
 from random import randint, uniform
+
+from sprites.stworek import Stworek
 
 
 class Scene:
@@ -15,7 +17,7 @@ class Scene:
 
     def __init__(self, screen: Surface, sprites: Group, screen_width: int, screen_height: int) -> None:
         self.sprites = sprites
-        self.autko = Autko(screen, type=Autko.TypeOfBall.PLAYER)
+        self.autko = Autko(screen, type=TypeOfBall.PLAYER)
         self.screen_width = screen_width
         self.screen_height = screen_height
 
@@ -24,17 +26,19 @@ class Scene:
                 rand_angle = uniform(0, 360)
                 rand_speed = uniform(0, 0)
                 rand_pos = [uniform(0, 800), uniform(0, 800)]
-                evil = Autko(screen, x=rand_pos[0], y=rand_pos[1], type=Autko.TypeOfBall.EVIL)
+                evil = Autko(screen, x=rand_pos[0], y=rand_pos[1], type=TypeOfBall.EVIL)
                 evil.velocity = Vector2(rand_speed, 0).rotate(rand_angle)
                 sprites.add(evil)
 
         if 0:
-            evil2 = Autko(screen, x=290, y=120, type=Autko.TypeOfBall.EVIL)
+            evil2 = Autko(screen, x=290, y=120, type=TypeOfBall.EVIL)
             sprites.add(evil2)
 
         # grass = Grass()
 
         self.sprites.add(self.autko)
+        cat = Stworek(screen, x=300, y=140, type=TypeOfBall.EVIL)
+        self.sprites.add(cat)
         # self.sprites.add(grass)
 
         # draw background

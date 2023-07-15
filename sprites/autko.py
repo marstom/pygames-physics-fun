@@ -11,11 +11,11 @@ from enum import Enum, auto
 
 DEBUG_PRINTS = 0
 
+class TypeOfBall(Enum):
+    PLAYER = auto()
+    EVIL = auto()
 
 class Autko(pygame.sprite.Sprite):
-    class TypeOfBall(Enum):
-        PLAYER = auto()
-        EVIL = auto()
 
     coefficient_of_friction = 0.22
 
@@ -31,9 +31,9 @@ class Autko(pygame.sprite.Sprite):
     def __init__(self, screen: Surface, x=120, y=120, type: TypeOfBall = TypeOfBall.PLAYER):
         super().__init__()
         self.screen = screen
-        if type == self.TypeOfBall.PLAYER:
+        if type == TypeOfBall.PLAYER:
             self.image = pygame.image.load("assets/aqua_ball.png").convert_alpha()
-        elif type == self.TypeOfBall.EVIL:
+        elif type == TypeOfBall.EVIL:
             self.image = pygame.image.load("assets/evil_ball.png").convert_alpha()
         self.image.set_colorkey((255, 255, 255))
         self.image = pygame.transform.scale(self.image, (self.image.get_width() * 2, self.image.get_height() * 2))
@@ -89,7 +89,7 @@ class Autko(pygame.sprite.Sprite):
                         break
                     # is collision
                     # hit noise
-                    print("HIT!!")
+                    print(f"HIT: {id(self)} with {id(sp)}")
                     pygame.mixer.Sound.play(self.crash_sound)
                     # pygame.mixer.music.stop()
 
