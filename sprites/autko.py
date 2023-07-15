@@ -45,8 +45,12 @@ class Autko(pygame.sprite.Sprite):
         self.velocity = Vector2(0, 0)
         self.acceleration = Vector2(0, 0)
 
+        self.crash_sound = pygame.mixer.Sound("assets/hit.wav")
+        self.acc_sound = pygame.mixer.Sound("assets/acc.wav")
+
     def accelerate(self, dir: AccDir):
         print("ACC")
+        pygame.mixer.Sound.play(self.acc_sound)
         # TODO accalerate has ange, must be update every frame !
         if dir == AccDir.FORWARD:
             self.acceleration = Vector2(0.1, 0)
@@ -83,6 +87,12 @@ class Autko(pygame.sprite.Sprite):
                     collision_normal = Vector2(sp.rect.center) - Vector2(self.rect.center)
                     if collision_normal.length() == 0:
                         break
+                    # is collision
+                    # hit noise
+                    print("HIT!!")
+                    pygame.mixer.Sound.play(self.crash_sound)
+                    # pygame.mixer.music.stop()
+
                     collision_normal.normalize_ip()
 
                     # Calculate relative velocity
