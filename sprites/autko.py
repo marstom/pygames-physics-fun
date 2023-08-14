@@ -11,16 +11,16 @@ from enum import Enum, auto
 
 DEBUG_PRINTS = 0
 
+class TypeOfBall(Enum):
+    PLAYER = auto()
+    EVIL = auto()
 
 class Autko(pygame.sprite.Sprite):
-    class TypeOfBall(Enum):
-        PLAYER = auto()
-        EVIL = auto()
 
     coefficient_of_friction = 0.22
 
     turn_speed = 0.0
-    turn_value_degrees = 0.0
+    turn_value_degrees = 4.0
     top_speed = 10.00
 
     accel: AccDir = AccDir.STOP
@@ -31,9 +31,9 @@ class Autko(pygame.sprite.Sprite):
     def __init__(self, screen: Surface, x=120, y=120, type: TypeOfBall = TypeOfBall.PLAYER):
         super().__init__()
         self.screen = screen
-        if type == self.TypeOfBall.PLAYER:
+        if type == TypeOfBall.PLAYER:
             self.image = pygame.image.load("assets/aqua_ball.png").convert_alpha()
-        elif type == self.TypeOfBall.EVIL:
+        elif type == TypeOfBall.EVIL:
             self.image = pygame.image.load("assets/evil_ball.png").convert_alpha()
         self.image.set_colorkey((255, 255, 255))
         self.image = pygame.transform.scale(self.image, (self.image.get_width() * 2, self.image.get_height() * 2))
@@ -45,8 +45,12 @@ class Autko(pygame.sprite.Sprite):
         self.velocity = Vector2(0, 0)
         self.acceleration = Vector2(0, 0)
 
+        self.crash_sound = pygame.mixer.Sound("assets/hit.wav")
+        self.acc_sound = pygame.mixer.Sound("assets/acc.wav")
+
     def accelerate(self, dir: AccDir):
         print("ACC")
+        pygame.mixer.Sound.play(self.acc_sound)
         # TODO accalerate has ange, must be update every frame !
         if dir == AccDir.FORWARD:
             self.acceleration = Vector2(0.1, 0)
@@ -83,6 +87,12 @@ class Autko(pygame.sprite.Sprite):
                     collision_normal = Vector2(sp.rect.center) - Vector2(self.rect.center)
                     if collision_normal.length() == 0:
                         break
+                    # is collision
+                    # hit noise
+                    print(f"HIT: {id(self)} with {id(sp)}")
+                    pygame.mixer.Sound.play(self.crash_sound)
+                    # pygame.mixer.music.stop()
+
                     collision_normal.normalize_ip()
 
                     # Calculate relative velocity
